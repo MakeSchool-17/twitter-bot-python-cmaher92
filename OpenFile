@@ -1,0 +1,9 @@
+# import random
+
+with open('Day_2/wordz', encoding='utf-8') as a_file:
+    lists = a_file.readlines()
+    words = []
+    for word in lists:
+        word = word.split('\n')[0]
+        words.append(word)
+    print(words)
