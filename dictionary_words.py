@@ -17,4 +17,10 @@ def generateSentence(int):
         sentenceString = ' '.join(sentence)
         print(upcase_first_letter(sentenceString))
 
-generateSentence(9)
+# generateSentence(9)
+
+
+# def txtToList(path):
+#     with open(path, encoding='utf-8') as a_file:
+#         lists = a_file.readlines()
+#         print(lists)
