@@ -1,7 +1,8 @@
 import random
+import bisect
 
 
-def weighted_choice(weights):
+def weighted_choice_b(weights):
     totals = []
     running_total = 0
 
@@ -10,9 +11,9 @@ def weighted_choice(weights):
         totals.append(running_total)
 
     rnd = random.random() * running_total
-    for i, total in enumerate(totals):
-        if rnd < total:
-            print(i)
+    print(bisect.bisect_right(totals, rnd))
+
+
 if __name__ == '__main__':
     weights = [2, 3, 5]
-    weighted_choice(weights)
+    weighted_choice_b(weights)
