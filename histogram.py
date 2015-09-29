@@ -14,12 +14,14 @@ def histogram(word_list):
         else:
             words[x] = 1
     sorted_words = sorted(words.items(), key=operator.itemgetter(1))
-    print(sorted_words)
+    # print(sorted_words)
+    return sorted_words
 
 
 def txt_to_list(file_path):
     with open(file_path) as f:
         myFile = f.read()
+        # print(myFile)
         myString = myFile.translate(trans_table).lower()
         myList = myString.split()
         return myList
