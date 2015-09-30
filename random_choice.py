@@ -1,19 +1,28 @@
-import random
-import bisect
+import re
+
+source_text = open('the_early_cave.txt').read().split()
+print(source_text)
 
 
-def weighted_choice_b(weights):
-    totals = []
-    running_total = 0
+def histogram(source_text):
+    histog = []
+    index = 0
+    for word in source_text:
+        filter(word)
+        if word in histog:
+            histog.append((word, 0))
+            index += 1
+        else:
+            histog[index][1] = 1
+            index = 1
+    print(histog)
 
-    for w in weights:
-        running_total += w
-        totals.append(running_total)
+def filter(word):
+    re.sub(r'-_W+', '', word)
+    word = word.lstrip('_-?.,"')
+    word = word.rstrip('_-?.,"')
+    return word
 
-    rnd = random.random() * running_total
-    print(bisect.bisect_right(totals, rnd))
 
-
-if __name__ == '__main__':
-    weights = [2, 3, 5]
-    weighted_choice_b(weights)
+if __name__ == "__main__":
+    histogram(source_text)
