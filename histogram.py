@@ -41,6 +41,14 @@ def sample_from_sum(distribution_list):
             return word
 
 
+def randomness_check(word):
+    simulated_words = []
+    while word not in simulated_words:
+        simulated_words.append(word)
+        sample_from_sum()
+    return simulated_words
+
+
 def txt_to_list(file_path):
     with open(file_path) as f:
         my_file = f.read()
@@ -54,7 +62,8 @@ def main():
     word_list = txt_to_list(file_path)
     x = histogram(word_list)
     y = cumulative_distribution(x)
-    return sample_from_sum(y)
+    w = sample_from_sum(y)
+    return randomness_check(w)
 
 
 if __name__ == '__main__':
