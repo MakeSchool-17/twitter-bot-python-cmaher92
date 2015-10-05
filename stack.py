@@ -4,7 +4,6 @@ class Stack:
         self.head = None
         self.size = 0
 
-
     def push(self, data):
         new_node = Node()
         new_node.data = data

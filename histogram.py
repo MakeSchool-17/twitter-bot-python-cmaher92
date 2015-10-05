@@ -6,9 +6,9 @@ to = '                            '
 trans_table = str.maketrans(frm, to)
 
 
-def histogram(word_list):
+def histogram(list_of_words):
     histogram = {}
-    for x in word_list:
+    for x in list_of_words:
         if x in histogram:
             histogram[x] += 1
         else:
@@ -21,7 +21,7 @@ def histogram(word_list):
 
 def test_histogram(selected_words_list):
     hgram = []                           # create a new list called hgram
-    for word in words:                   # for each word in the list of words
+    for word in selected_words_list:     # for each word in the list of words
         index = find(word, hgram)        # check if word is in hgram already
         if index is None:                # if word is not in histogram
             hgram.append((word, 1))      # add a new word-count pair to hgram
@@ -68,33 +68,31 @@ def sample_from_sum(distribution_list):
             return word
 
 
-def list(length):
-    dict_words = '/usr/share/dict/words'
-    words_str  = open(dict_words, 'r').read()
-    all_words  = words_str.split("\n")
-    return all_words[0:length]
-
-
-# def test_probability():
-
-
-def txt_to_list(file_path):
+def txt_to_list(file_path):              # opens text, makes into list
     with open(file_path) as f:
         my_file = f.read()
         # print(myFile)
         my_string = my_file.translate(trans_table).lower()
-        my_list = my_string.split()
-        return my_list
+        list_of_words = my_string.split()
+        return list_of_words
+
+
+def frequency(word, hgram):               # takes word and list from histogram
+    index = find(word, hgram)             # gives the index for the word
+    if index:                             # increments found word
+        word_count_pair = hgram[index]
+        return word_count_pair[1]
+    else:
+        return 0
 
 
 def main():
-    word_list = txt_to_list(file_path)
-    histogram_dict = histogram(word_list)
-    distribution_list = cumulative_distribution(histogram_dict)
+    list_of_words = txt_to_list(file_path)  # returns words as a list
+    histogram_dict = histogram(list_of_words)    # returns histogram as a dict
+    distribution_list = cumulative_distribution(histogram_dict)  # weighted words list
     word = sample_from_sum(distribution_list)
-    # words_in_list = list(10)
-    # print(words_in_list)
+    histogram_weighted = test_histogram(distribution_list)
     return word
 
 if __name__ == '__main__':
-    main()
+    print(main())
