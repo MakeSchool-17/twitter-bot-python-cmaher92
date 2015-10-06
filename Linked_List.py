@@ -60,11 +60,3 @@ class LinkedList(object):
             self.head = current.get_next()
         else:
             previous.set_next(current.get_next())
-    # 
-    # def __str__(self):
-    #     return_str = ''
-    #     current_node = self.head
-    #     while current_node is not None:
-    #         return_str += str(current_node.data) + ' '
-    #         current_node = current_node.next_node
-    #     return return_str
