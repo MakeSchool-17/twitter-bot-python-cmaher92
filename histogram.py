@@ -1,4 +1,5 @@
 import random
+import Hashtable
 
 file_path = 'the_early_cave.txt'
 frm = '-$!@#$%^&*()_+-=[]}{/},.?:;|'
@@ -84,14 +85,14 @@ def frequency(word, hgram):               # takes word and list from histogram
         return word_count_pair[1]
     else:
         return 0
-
+        
 
 def main():
     list_of_words = txt_to_list(file_path)  # returns words as a list
     histogram_dict = histogram(list_of_words)    # returns histogram as a dict
     distribution_list = cumulative_distribution(histogram_dict)  # weighted words list
     word = sample_from_sum(distribution_list)
-    histogram_weighted = test_histogram(distribution_list)
+    # histogram_weighted = test_histogram(distribution_list)
     return word
 
 if __name__ == '__main__':

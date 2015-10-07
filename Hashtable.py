@@ -1,95 +1,115 @@
-class Hashtable:
-
-    def __init__(self):
-        self.hashtable = []                                 # creates the list type for the table
-        while len(self.hashtable) < 10:
-            self.hashtable.append(LinkedList())             # adds linked lists to hashtable
-        self.size = 0
-        self.keys = []
-
-    def set(self, key, data):
-        index_key = hash(key) % len(self.hashtable)         # bucket index, uses division method
-        self.hashtable[index_key].insert([key, data])       # inserts key and data to the proper bucket
-        self.size += 1                                      # increments the size of the Hashtable
-        self.keys.append(key)                               # appends the key to the keys list
-
-    def get(self, key):
-        index_key = hash(key) % len(self.hashtable)         # division method to determine bucket
-        return self.hashtable[index_key].return_data(key)   # returns the key from the selected bucket
-
-    def update(self, key, data):
-        index_key = hash(key) % len(sef.hashtable)          # determines bucket based on the given key
-        self.hashtable[index_key].find(key).data[1] = data  # finds the data based on the provided key in the selected bucket
-
-    def get_keys(self):                                     # returns all of the keys
-        return self.keys
-
-    def get_values(self):                                   # returns values
-        values = []
-        for key in self.keys:
-            values.append(self.get(key))
-        return values
-
-
 class Node(object):
 
-    def __init__(self, data=None, next_node=None):
+    def __init__(self, data=None):          # Initalizes a node without pointer
         self.data = data
-        self.next_node = next_node
+        self.next = None
 
-    def get_data(self):
-        return self.data
-
-    def get_next(self):
-        return self.next_node
-
-    def set_next(self, new_next):
-        self.next_node = new_next
+    def __str__(self):
+        has_next = ', has next' if self.next else 'no next '
+        return 'Node({}{})'.format(self.data, has_next)
 
 
 class LinkedList(object):
 
-    def __init__(self, head=None):
-        self.head = head  # top node in the list
+    def __init__(self):
+        self.size = 0
+        self.head = None
+        self.tail = None
 
-    def append(self, data):  # takes data and inits new node
-        new_node = Node(data)  # adds new_node to the list
-        new_node.set_next(self.head)
+    def __str__(self):
+        head_str = 'head: ' + str(self.head) if self.head else ''
+        tail_str = 'tail: ' + str(self.tail) if self.tail else ''
+        return 'LinkedList({}{})'.format(head_str, tail_str)
+
+    def is_empty(self):  # returns true if list is empty
+        return self.size == 0
+
+    def is_valid(self):
+        head_valid = self.head is not None
+        tail_valid = self.tail is not None
+        size_valid = self.size > 0
+        # sets aboves to boolean values
+        if head_valid and tail_valid and size_valid:
+            return True
+        elif not head_valid and not tail_valid and not size_valid:
+            return True
+        else:
+            return False
+
+    def insert_at_head(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
         self.head = new_node
+        self.size += 1
+        if self.tail is None:
+            self.tail = new_node
 
-    def size(self):
-        current = self.head  # starts at the first node and counts
+    def insert_at_tail(self, data):
+        new_node = Node(data)
+        if self.is_empty():
+            self.head = new_node
+        else:
+            self.tail.next = new_node
+        self.tail = new_node
+        self.size += 1
+
+    def remove_head(self):
+        if self.head is None:
+            raise ValueError('List is empty')
+        self.head = self.head.next
+        self.size -= 1
+
+    def calculate_size(self):
         count = 0
-        while current:
+        current_node = self.head
+        while current_node is not None:
             count += 1
-            current = current.get_next()
+            current_node = current_node.next
         return count
 
-    def find(self, data):
-        current = self.head
-        found = False
-        while current and found is False:
-            if current.get_data() == data:
-                found = True
-            else:
-                current = current.get_next()
-        if current is None:
-            raise ValueError("Data is not in list")
-        return current
 
-    def delete(self, data):
-        current = self.head
-        previous = None
-        found = False
-        while current and found is False:
-            if current.get_data() == data:
-                found = True
+class HashTable():
+
+    def __init__(self, table_size=10):
+        self.table = []
+        self.table_size = table_size
+        self.item_count = 0
+        for bucket in range(table_size):
+            self.table.append(LinkedList())
+
+    def load_factor(self):
+        load = self.item_count / self.table_size
+        return load
+
+    def get_bucket(self, key):
+        bucket_id = hash(key) % self.table_size
+        correct_bucket = self.table[bucket_id]
+        return correct_bucket
+
+    def set(self, key, value):
+        correct_bucket = self.get_bucket(key)
+        correct_bucket.insert_at_head((key, value))
+        self.item_count += 1
+
+    def get(self, key):
+        correct_bucket = self.get_bucket(key)
+        current_node = correct_bucket.head
+        while current_node.data is not None:
+            if key in current_node.data:
+                return current_node.data
             else:
-                previous = current
-                current = current.get_next()
-        if current is None:
-            raise ValueError("Data not in list")
-        if previous is None:
-            self.head = current.get_next()
-        else:
-            previous.set_next(current.get_next())
+                current_node = current_node.next_node
+        return KeyError("This key is not in this list!")
+
+    def update(self, key, new_value):
+        correct_bucket = self.get_bucket(key)
+        current_node = correct_bucket.head
+        found = False
+        while not found and current_node.data is not None:
+            if key in current_node.data:
+                found = True
+                current_node.data = (key, new_value)
+                return '{} updated to {}'.format(key, new_value)
+            else:
+                current_node = current_node.next_node
+        return KeyError('Cannot update: key not in list!')
