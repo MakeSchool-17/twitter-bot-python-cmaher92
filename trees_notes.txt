@@ -1,0 +1,49 @@
+*Trees*
+- Nodes and edges, without any cycle.
+- Can't point back to itself
+- Only can have one parent
+
+Root: topmost node
+Parent: converse of a child
+Descendant: Node reachable from parent to child
+Ancestor: Node reachable from child to parent
+Leaf/external Node: Node with no children
+Internal Node: Node with at least one child
+Height (tree): Number of edges on longest downward path from root to leaf
+Height (node): Number of edges on longest downward path from node to leaf
+Level: 1 + number of edges between the node and the root
+Depth: Number of edges between the node and the root
+Size: Number of nodes in the tree
+
+*Binary Trees*
+- Always sorted
+- For each node
+- Left smaller
+
+*Why Use a BST? (Binary Search Tree)*
+- Fast search
+- insertion
+- deletion
+- especially when balance
+- sort as you go, instead of all at once
+- only allocates memory as it's needed
+- doesn't have to reallocate memory to grow (like a hashtable)
+
+*A Note on LOG N*
+- When discussing complexity of computational algorithms, log n means log2n.
+
+Binary Logarithm
+log2n = x <-> 2^x = n
+"the power by which 2 must be raised by to obtain n"
+
+log(2)16 log(2)32 = 5 log(2)143 = 7.15987
+
+*Search a BST*
+
+def find_rescursive(key, node):
+    if node is None or node.key == key: # if Node is none or key is found return key
+        return node
+      elif key < node.key:
+        return find_recursive(key, node.left)
+      else:
+        return find_recursive(key, node.right)
