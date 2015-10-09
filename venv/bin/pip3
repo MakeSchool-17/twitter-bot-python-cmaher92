@@ -1,4 +1,4 @@
-#!/Users/cmaher92/twitter-bot-python-cmaher92/bin/python3.5
+#!/Users/cmaher92/twitter-bot-python-cmaher92/venv/bin/python3.5
 
 # -*- coding: utf-8 -*-
 import re
