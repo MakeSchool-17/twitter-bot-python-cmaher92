@@ -1,6 +1,9 @@
 import random
 import Hashtable
 
+# [brian] this will be explained below
+from collections import defaultdict
+
 file_path = 'the_early_cave.txt'
 frm = '-$!@#$%^&*()_+-=[]}{/},.?:;|'
 to = '                            '
@@ -10,6 +13,8 @@ trans_table = str.maketrans(frm, to)
 def histogram(list_of_words):
     histogram = {}
     for x in list_of_words:
+        # [brian] This is a really common pattern, so python has tried to make it easy
+        # to write by providing `defaultdict` for you.
         if x in histogram:
             histogram[x] += 1
         else:
@@ -18,6 +23,16 @@ def histogram(list_of_words):
     return histogram
     # sorted_words = sorted(words.items(), key=operator.itemgetter(1))
     # return sorted_words
+
+    # [brian] The above can be written:
+    histogram = defaultdict(int)
+    for x in list_of_words:
+        histogram[x] += 1
+    return histogram
+    # defaultdict takes a constructor, and when the key isn't found calls that
+    # constructor instead of throwing an Exception. Here, `int` is a function
+    # which returns 0, the default value.
+    # https://docs.python.org/2/library/collections.html#collections.defaultdict
 
 
 def test_histogram(selected_words_list):
@@ -34,6 +49,7 @@ def test_histogram(selected_words_list):
 
 
 def find(item, hgram):
+    # [brian] Nice! Just what I would have written
     for index, pair in enumerate(hgram):
         if pair[0] == item:
             return index
@@ -53,7 +69,16 @@ def cumulative_distribution(histogram):
 
 def list(length):
     dict_words = '/usr/share/dict/words'
+    # [brian] Careful, you forgot to close the file! In a small script like this it's not
+    # a big problem, but in a larger program this could cause quite a bit of trouble
     words_str  = open(dict_words, 'r').read()
+    # [brian] luckily, this is also a common pattern, so python has made writing it easy:
+    with open(dict_words, 'r') as words_file:
+        words_str = words_file.read()
+    # the file will automatically be closed once the program leaves the with block.
+    # If you don't know what a context manager is don't worry too much about the syntax,
+    # but always wrapping file opens with a with block is a really good habit to get into.
+
     all_words  = words_str.split("\n")
     return all_words[0:length]
 
